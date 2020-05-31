@@ -43,7 +43,8 @@ class LiveBoard {
       stationName: StationNameType.fromJson(json['StationName']),
       tripHeadSign: json['TripHeadSign'],
       destinationStaionID: json['DestinationStaionID'],
-      destinationStationName: StationNameType.fromJson(json['DestinationStationName']),
+      destinationStationName:
+          StationNameType.fromJson(json['DestinationStationName']),
       estimateTime: json['EstimateTime'],
       srcUpdateTime: json['SrcUpdateTime'],
       updateTime: json['UpdateTime'],
@@ -60,7 +61,6 @@ class KRTCPage extends StatefulWidget {
 }
 
 class _KRTCPageState extends State<KRTCPage> {
-
   List<LiveBoard> liveBoards;
 
   @override
@@ -79,15 +79,13 @@ class _KRTCPageState extends State<KRTCPage> {
     var test = Hmac(sha1, appKey).convert(bytes);
     var base64 = base64Encode(test.bytes);
     print(base64);
-    var authorization = "hmac username=\"$appid\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"$base64\"";
+    var authorization =
+        "hmac username=\"$appid\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"$base64\"";
     print(authorization);
     var url = 'https://ptx.transportdata.tw/MOTC/v2/Rail/Metro/LiveBoard/KRTC';
     var uri = Uri.parse(url);
     var stationID = widget.station.stationID;
-    var params = {
-      "format": "JSON",
-      "\$filter": "StationID eq '$stationID'"
-    };
+    var params = {"format": "JSON", "\$filter": "StationID eq '$stationID'"};
     var newUri = uri.replace(queryParameters: params);
     var res = await http.get(newUri, headers: {
       "Authorization": "$authorization",
@@ -95,8 +93,8 @@ class _KRTCPageState extends State<KRTCPage> {
       "x-date": "$formattedDate GMT"
     });
     var list = (json.decode(res.body) as List)
-          .map((i) => LiveBoard.fromJson(i))
-          .toList();
+        .map((i) => LiveBoard.fromJson(i))
+        .toList();
     setState(() {
       liveBoards = list;
     });
@@ -105,17 +103,21 @@ class _KRTCPageState extends State<KRTCPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.station.stationName.zhTw),
-      ),
-      body: liveBoards != null ? Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          ShadowCard(liveBoards.first),
-          ShadowCard(liveBoards[1])
-        ],
-      ) : Center(child: Container(child: Text('暫無資料...'),))
-    );
+        appBar: AppBar(
+          title: Text(widget.station.stationName.zhTw),
+        ),
+        body: liveBoards != null
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  ShadowCard(liveBoards[0]),
+                  liveBoards.length > 1 ? ShadowCard(liveBoards[1]) : SizedBox(height: 10,)
+                ],
+              )
+            : Center(
+                child: Container(
+                child: Text('暫無資料...'),
+              )));
   }
 }

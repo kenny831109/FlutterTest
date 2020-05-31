@@ -111,7 +111,7 @@ class _KRTCPageState extends State<KRTCPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  ShadowCard(liveBoards[0]),
+                  liveBoards.length == 0 ? SizedBox(height: 10,) : ShadowCard(liveBoards[0]),
                   liveBoards.length > 1 ? ShadowCard(liveBoards[1]) : SizedBox(height: 10,)
                 ],
               )

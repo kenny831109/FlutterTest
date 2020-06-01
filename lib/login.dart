@@ -1,3 +1,5 @@
+import 'package:Test/customRouter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'customTextField.dart';
@@ -91,9 +93,8 @@ class _LoginPageState extends State<LoginPage> {
                                 passwordController.text != '')
                               {
                                 Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomePage()))
+                                    context, ScaleRoute(page: HomePage())
+                                    )
                               }
                             else
                               {
